@@ -83,31 +83,33 @@
 {% endif %}
     "keyData": [
       {
-{% if private_public_key is defined and public_key_path is defined %}
+{% if public_key_path is defined and private_key_path is defined %}
         "privateKeyPath": "{{ private_key_path }}",
         "publicKeyPath": "{{ public_key_path }}",
 {% endif %}
 {% if aws_secret_manager %}
         "awsSecretsManagerPublicKeyId": "{{ aws_SecretsManager_PublicKeyId }}",
-        "awsSecretsManagerPrivateKeyId": "{{ aws_SecretsManager_PrivateKeyId }}",
+        "awsSecretsManagerPrivateKeyId": "{{ aws_SecretsManager_PrivateKeyId }}"
 {% endif %}
 {% if azure_key_vault %}
         "azureVaultPrivateKeyId": "{{ azure_Vault_PrivateKeyId }}",
         "azureVaultPrivateKeyVersion": "{{ azure_Vault_PrivateKeyVersion }}",
         "azureVaultPublicKeyId": "{{ azure_Vault_PublicKeyId }}",
-        "azureVaultPublicKeyVersion": "{{ azure_Vault_PublicKeyVersion }}",
+        "azureVaultPublicKeyVersion": "{{ azure_Vault_PublicKeyVersion }}"
 {% endif %}
 {% if hashicorp_vault %}
         "hashicorpVaultSecretEngineName": "{{ hashicorp_vaultSecretEngineName }}",
         "hashicorpVaultSecretName": "{{ hashicorp_vaultSecretName }}",
         "hashicorpVaultSecretVersion": "{{ hashicorp_vaultSecretVersion }}",
         "hashicorpVaultPrivateKeyId": "{{ hashicorp_vaultPrivateKeyId }}",
-        "hashicorpVaultPublicKeyId": "{{ hashicorp_vaultPublicKeyId }}",
+        "hashicorpVaultPublicKeyId": "{{ hashicorp_vaultPublicKeyId }}"
 {% endif %}
-{% if public_key is defined and config_details is defined and private_key is defined %}
+{% if public_key is defined and config_details is defined %}
         "publicKey": "{{ public_key }}",
-        "config": "{{ config_details }}",
-        "privateKey": "{{ private_key }}",
+        "config": "{{ config_details }}"
+{% endif %}
+{% if private_key %}
+        ,"privateKey": "{{ private_key }}"
 {% endif %}
       }
     ]
@@ -121,9 +123,9 @@
     "enableRemoteKeyValidation": "{{ enable_remoteKeyValidation }}",
     "enablePrivacyEnhancements": "{{ enable_privacyEnhancements }}",
     "enableMultiplePrivateStates": "{{ enable_multiplePrivateStates }}"
-  },
+  }
 {% if encryptor_type is defined %}
-  "encryptor": {
+  ,"encryptor": {
     "type": "{{ encryptor_type }}",
 {% if encryptor_type == 'EC' %}
     "properties":{

@@ -12,7 +12,7 @@
 
 - name: Get private IP address to bind to if not provided
   include_tasks: "network_private.yml"
-  when: not tessera_client_ip
+  when: tessera_client_ip is not defined
 
 - name: Create config
   include_tasks: "config.yml"

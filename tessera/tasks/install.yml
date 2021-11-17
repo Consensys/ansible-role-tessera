@@ -42,6 +42,22 @@
     dest: "/etc/logrotate.d/tessera"
   become: true
 
+- name: Install latest Java
+  block:
+    - name: Java for RedHat distros
+      package:
+        name: "java-latest-openjdk.x86_64"
+        state: latest
+      become: yes
+      when: ansible_os_family == 'RedHat'
+    
+    - name: Java for Debian distros
+      package:
+        name: "default-jdk"
+        state: latest
+      become: yes
+      when: ansible_os_family == 'Debian'
+
 - name: Extract Tessera distribution to install directory
   unarchive:
     src: "{{ tessera_download_url }}"
@@ -58,13 +74,20 @@
   
 - name: Install Tessera Artefacts
   include_tasks: "artefacts.yml"
-  become: true
   when: extract_src is changed and (aws_secret_manager or azure_key_vault or hashicorp_vault)
+
+- name: Ensure config directory exists
+  file:
+    path: "{{ tessera_config_dir }}"
+    state: directory
+    owner: "{{ tessera_user }}"
+    group: "{{ tessera_group }}"
+  become: yes
 
 - name: Create logback from template
   template:
     src: tessera/templates/logback.xml.j2
-    dest: {{ tessera_config_dir }}
+    dest: "{{ tessera_config_dir }}/logback.xml"
     owner: "root"
     group: "root"
   become: true
@@ -82,16 +105,9 @@
     name: tessera
     state: stopped
   when: ( extract_src is changed ) and
-    ( tessera_managed_service ) and
     ( ansible_os_family != "Darwin" )
   become: true
   ignore_errors: true
 
-- name: Create a symlink to current
-  file:
-    src: "{{ tessera_install_dir }}/"
-    dest: "{{ tessera_current_dir }}"
-    state: link
-  become: true
 
 ...

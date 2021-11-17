@@ -10,7 +10,7 @@
 - name: Generate config file
   template:
     src: "tessera/templates/config.json.j2"
-    dest: "{{ tessera_config_dir }}/tessera.conf"
+    dest: "{{ tessera_config_dir }}/config.json"
     owner: "{{ tessera_user }}"
     group: "{{ tessera_group }}"
   become: true

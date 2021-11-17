@@ -55,7 +55,6 @@ peers: []
 
 ### Key data configuration ###
 # Private and public key path
-private_public_key: true # this is the default
 private_key_path: ""
 public_key_path: ""
 public_key: ""

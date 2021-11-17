@@ -20,6 +20,22 @@
       - '1'
   become: true
 
+- name: Install build tools
+  block:
+    - name: For RedHat distros
+      package:
+        name: "@Development tools"
+        state: latest
+      become: yes
+      when: ansible_os_family == 'RedHat'
+    
+    - name: For Debian distros
+      package:
+        name: "build-essential"
+        state: latest
+      become: yes
+      when: ansible_os_family == 'Debian'
+
 - name: Configure libsodium compilation
   command:
     chdir: "{{ tessera_libsodium_dir }}"
