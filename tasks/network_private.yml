@@ -1,0 +1,66 @@
+---
+- name: Get the default ipv4 address
+  set_fact:
+    tessera_default_ip: >-
+      {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] if
+      hostvars[inventory_hostname]['ansible_default_ipv4']['address'] is
+      defined else '127.0.0.1' }}
+
+- name: Check if running on AWS
+  uri:
+    url: http://169.254.169.254/latest/meta-data/local-ipv4
+    method: GET
+    return_content: yes
+    status_code: 200
+  register: aws_private_ip_output
+  ignore_errors: True
+
+- name: Set the private ip if we are in AWS
+  set_fact:
+    tessera_client_ip: "{{ aws_private_ip_output.content }}"
+  when: aws_private_ip_output.status == 200
+
+- name: Check if running on Azure
+  uri:
+    url: http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/privateIpAddress?api-version=2017-08-01&format=text
+    method: GET
+    headers:
+      Metadata: true
+    return_content: yes
+    status_code: 200
+  register: azure_private_ip_output
+  ignore_errors: True
+  when: ( aws_private_ip_output.status != 200 )
+
+- name: Set the host ip if we are in Azure
+  set_fact:
+    tessera_client_ip: "{{ azure_private_ip_output.content }}"
+  when: ( aws_private_ip_output.status != 200 ) and
+    ( azure_private_ip_output.status == 200 )
+
+- name: Check if running on GCP
+  uri:
+    url: http://169.254.169.254/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/ip
+    method: GET
+    headers:
+      Metadata-Flavor: Google
+    return_content: yes
+    status_code: 200
+  register: gcp_private_ip_output
+  ignore_errors: True
+  when: ( aws_private_ip_output.status != 200 ) and
+    ( azure_private_ip_output.status != 200 )
+
+- name: Set the host ip if we are in GCP
+  set_fact:
+    tessera_node_ip: "{{ gcp_private_ip_output.content }}"
+  when: ( aws_private_ip_output.status != 200 ) and
+    ( azure_private_ip_output.status != 200 ) and
+    ( gcp_private_ip_output == 200 )
+
+- name: Fallback for the client ip to the ansible default ip
+  set_fact:
+    tessera_client_ip: "{{ tessera_default_ip }}"
+  when: ( aws_private_ip_output.status != 200 ) and
+    ( azure_private_ip_output.status != 200 ) and
+    ( gcp_private_ip_output != 200 )

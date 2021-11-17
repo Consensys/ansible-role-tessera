@@ -1,0 +1,23 @@
+---
+- name: Ensure we have tessera_version
+  fail:
+    msg: You must set "tessera_version" for this role to run
+  when: tessera_version is not defined
+
+- name: Install Tessera
+  include_tasks: "install.yml"
+
+- name: Install libsodium
+  include_tasks: "install-libsodium.yml"
+
+- name: Get private IP address to bind to if not provided
+  include_tasks: "network_private.yml"
+  when: not tessera_client_ip
+
+- name: Create config
+  include_tasks: "config.yml"
+
+- name: Create Tessera Service
+  include_tasks: "service.yml"
+
+...

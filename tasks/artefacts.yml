@@ -1,0 +1,41 @@
+- name: Extract AWS artefact to install directory
+  unarchive:
+    src: "{{ aws_key_vault_download_url }}"
+    remote_src: true
+    dest: "{{ tessera_install_dir }}/lib"
+    owner: "{{ tessera_user }}"
+    group: "{{ tessera_group }}"
+    mode: '0775'
+    extra_opts:
+      - --strip-components
+      - '1'
+  become: true
+  when: aws_secret_manager
+
+- name: Extract Azure artefact to install directory
+  unarchive:
+    src: "{{ azure_key_vault_download_url }}"
+    remote_src: true
+    dest: "{{ tessera_install_dir }}/lib"
+    owner: "{{ tessera_user }}"
+    group: "{{ tessera_group }}"
+    mode: '0775'
+    extra_opts:
+      - --strip-components
+      - '1'
+  become: true
+  when: azure_key_vault
+
+- name: Extract Hashicorp artefact to install directory
+  unarchive:
+    src: "{{ hashicorp_key_vault_download_url }}"
+    remote_src: true
+    dest: "{{ tessera_install_dir }}/lib"
+    owner: "{{ tessera_user }}"
+    group: "{{ tessera_group }}"
+    mode: '0775'
+    extra_opts:
+      - --strip-components
+      - '1'
+  become: true
+  when: hashicorp_vault

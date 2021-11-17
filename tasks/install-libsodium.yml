@@ -1,0 +1,45 @@
+---
+- name: Create libsodium install directory
+  file:
+    path: "{{ tessera_libsodium_dir }}"
+    state: directory
+    owner: "{{ tessera_user }}"
+    group: "{{ tessera_group }}"
+  become: true
+
+- name: Extract libsodium
+  unarchive:
+    src: "{{ libsodium_download_url }}"
+    remote_src: true
+    dest: "{{ tessera_libsodium_dir }}"
+    owner: "{{ tessera_user }}"
+    group: "{{ tessera_group }}"
+    mode: '0775'
+    extra_opts:
+      - --strip-components
+      - '1'
+  become: true
+
+- name: Configure libsodium compilation
+  command:
+    chdir: "{{ tessera_libsodium_dir }}"
+    cmd: ./configure
+  become: true
+  become_user: "{{ tessera_user }}"
+  register: config_libsodium
+
+- name: Build libsodium
+  make:
+    chdir: "{{ tessera_libsodium_dir }}"
+  become: true
+  become_user: "{{ tessera_user }}"
+  when: config_libsodium is changed
+
+- name: Install libsodium
+  make:
+    chdir: "{{ tessera_libsodium_dir }}"
+    target: install
+  become: true
+  when: config_libsodium is changed
+
+...

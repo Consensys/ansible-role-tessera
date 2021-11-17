@@ -1,0 +1,138 @@
+{
+{% if run_with_besu %}
+  "mode": "orion",
+{% endif %}
+  "useWhiteList": "{{ use_whitelist }}",
+  "disablePeerDiscovery": "{{ disable_peer_discovery }}",
+  "jdbc": {
+    "username": "{{ jdbc_username }}",
+    "password": "{{ jdbc_password }}",
+    "url": "{{ jdbc_url }}",
+    "autoCreateTables": "{{ jdbc_autoCreateTables }}"
+  },
+  "serverConfigs":
+{% if server_configs|length == 0 %} 
+  [
+    {
+      "app":"ThirdParty",
+      "enabled": true,
+      "serverAddress": "http://{{ tessera_client_ip }}:9080",
+      "communicationType" : "REST"
+    },
+    {
+      "app":"Q2T",
+      "enabled": true,
+      "serverAddress": "http://{{ tessera_client_ip }}:9101",
+      "sslConfig": {
+        "tls": "OFF"
+      },
+      "communicationType" : "REST"
+    },
+    {
+      "app":"P2P",
+      "enabled": true,
+      "serverAddress": "http://{{ tessera_client_ip }}:9000",
+      "sslConfig": {
+        "tls": "OFF"
+      },
+      "communicationType" : "REST"
+    }
+  ],
+{% endif %}
+{% if peers is not defined %}
+  "peer": [
+    {
+      "url": "http://{{ tessera_client_ip }}:9001"
+    },
+    {
+      "url": "http://{{ tessera_client_ip }}:9003"
+    }
+  ],
+{% else %}
+  "peer": {{ peers }},
+{% endif %}
+  "keys": {
+{% if aws_secret_manager %}
+    "keyVaultConfigs": [
+      {
+        "keyVaultType": "AWS",
+        "properties": {
+          "endpoint": "https://secretsmanager.{{ aws_region }}.amazonaws.com"
+        }
+      }
+    ],
+{% endif %}
+{% if azure_key_vault %}
+    "keyVaultConfigs": [
+      {
+        "keyVaultType": "AZURE",
+        "properties": {
+          "endpoint": "{{ azure_endpoint }}"
+        }
+      }
+    ],
+{% endif %}
+{% if hashicorp_vault %}
+    "keyVaultType": "HASHICORP",
+    "properties": {
+        "url": "{{ vault_url }}",
+        "tlsKeyStorePath": "{{ tls_KeyStorePath }}",
+        "tlsTrustStorePath": "{{ tls_TrustStorePath }}",
+        "approlePath": "{{ app_role_Path }}"
+    }
+{% endif %}
+    "keyData": [
+      {
+{% if private_public_key is defined and public_key_path is defined %}
+        "privateKeyPath": "{{ private_key_path }}",
+        "publicKeyPath": "{{ public_key_path }}",
+{% endif %}
+{% if aws_secret_manager %}
+        "awsSecretsManagerPublicKeyId": "{{ aws_SecretsManager_PublicKeyId }}",
+        "awsSecretsManagerPrivateKeyId": "{{ aws_SecretsManager_PrivateKeyId }}",
+{% endif %}
+{% if azure_key_vault %}
+        "azureVaultPrivateKeyId": "{{ azure_Vault_PrivateKeyId }}",
+        "azureVaultPrivateKeyVersion": "{{ azure_Vault_PrivateKeyVersion }}",
+        "azureVaultPublicKeyId": "{{ azure_Vault_PublicKeyId }}",
+        "azureVaultPublicKeyVersion": "{{ azure_Vault_PublicKeyVersion }}",
+{% endif %}
+{% if hashicorp_vault %}
+        "hashicorpVaultSecretEngineName": "{{ hashicorp_vaultSecretEngineName }}",
+        "hashicorpVaultSecretName": "{{ hashicorp_vaultSecretName }}",
+        "hashicorpVaultSecretVersion": "{{ hashicorp_vaultSecretVersion }}",
+        "hashicorpVaultPrivateKeyId": "{{ hashicorp_vaultPrivateKeyId }}",
+        "hashicorpVaultPublicKeyId": "{{ hashicorp_vaultPublicKeyId }}",
+{% endif %}
+{% if public_key is defined and config_details is defined and private_key is defined %}
+        "publicKey": "{{ public_key }}",
+        "config": "{{ config_details }}",
+        "privateKey": "{{ private_key }}",
+{% endif %}
+      }
+    ]
+  },
+  "alwaysSendTo": "{{ always_send_to }}",
+  "bootstrapNode": "{{ bootstrap_node }}",
+{% if unix_socket_file is defined %}
+  "unixSocketFile": "{{ unix_socket_file }}",
+{% endif %}
+  "features": {
+    "enableRemoteKeyValidation": "{{ enable_remoteKeyValidation }}",
+    "enablePrivacyEnhancements": "{{ enable_privacyEnhancements }}",
+    "enableMultiplePrivateStates": "{{ enable_multiplePrivateStates }}"
+  },
+{% if encryptor_type is defined %}
+  "encryptor": {
+    "type": "{{ encryptor_type }}",
+{% if encryptor_type == 'EC' %}
+    "properties":{
+      "symmetricCipher":"{{ symmetric_cipher }}",
+      "ellipticCurve": "{{ elliptic_curve }}",
+      "nonceLength": "{{ nonce_length }}",
+      "sharedKeyLength": "{{ shared_key_length }}"
+    }
+{% endif %}
+  }
+{% endif %}
+}

@@ -1,0 +1,109 @@
+#######################################################
+################## Ansible Config #####################
+#######################################################
+
+# User and group
+tessera_user: tessera
+tessera_group: "{{ tessera_user }}"
+
+# Download URLs
+tessera_download_url: "https://oss.sonatype.org/service/local/repositories/releases/content/net/consensys/quorum/tessera/tessera-dist/{{ tessera_version }}/tessera-dist-{{ tessera_version }}.tar"
+enclave_download_url: "https://oss.sonatype.org/service/local/repositories/releases/content/net/consensys/quorum/tessera/enclave-jaxrs/{{ tessera_version }}/enclave-jaxrs-{{ tessera_version }}.tar"
+azure_key_vault_download_url: "https://oss.sonatype.org/service/local/repositories/releases/content/net/consensys/quorum/tessera/azure-key-vault/{{ tessera_version }}/azure-key-vault-{{ tessera_version }}.tar"
+aws_key_vault_download_url: "https://oss.sonatype.org/service/local/repositories/releases/content/net/consensys/quorum/tessera/aws-key-vault/{{ tessera_version }}/aws-key-vault-{{ tessera_version }}.tar"
+hashicorp_key_vault_download_url: "https://oss.sonatype.org/service/local/repositories/releases/content/net/consensys/quorum/tessera/hashicorp-key-vault/{{ tessera_version }}/hashicorp-key-vault-{{ tessera_version }}.tar"
+libsodium_download_url: "https://download.libsodium.org/libsodium/releases/LATEST.tar.gz"
+
+# Directory paths
+tessera_base_dir: "/opt/tessera"
+tessera_install_dir: "{{ tessera_base_dir }}/tessera-{{ tessera_version }}"
+tessera_config_dir: "/etc/tessera"
+tessera_log_dir: "/var/log/tessera"
+tessera_libsodium_dir: "{{ tessera_base_dir }}/libsodium"
+tessera_config_template: "templates/config.json.j2"
+
+#######################################################
+################## Tessera Config #####################
+#######################################################
+
+# Default log level
+default_log_level: "INFO"
+
+# JDBC Connection -- any valid JDBC URL can be specified
+jdbc_url: "jdbc:h2:.{{ tessera_config_dir }}/db;MODE=Oracle;TRACE_LEVEL_SYSTEM_OUT=0"
+jdbc_username: ""
+jdbc_password: ""
+jdbc_autoCreateTables: false
+
+# Peer discovery - if disabled (set to true) then communication is limited to peers listed in config file
+disable_peer_discovery: false
+
+# Whitelist -- set to true to restrict connections to Tessera to specified peers
+use_whitelist: false
+
+# Run Tessera with Besu
+run_with_besu: false
+
+# Boostrap node -- if set to true then node function as boostrap for other nodes
+bootstrap_node: false
+
+# Server configs
+server_configs: []
+
+# List of peers to connect
+peers: []
+
+### Key data configuration ###
+# Private and public key path
+private_public_key: true # this is the default
+private_key_path: ""
+public_key_path: ""
+public_key: ""
+private_key: ""
+config_details: ""
+
+# AWS
+aws_secret_manager: false 
+aws_region: "us-east-1" # make sure to override this if aws_secret_manager is set to true
+aws_SecretsManager_PublicKeyId: ""
+aws_SecretsManager_PrivateKeyId: ""
+
+# Azure
+azure_key_vault: false
+azure_Vault_PrivateKeyId: ""
+azure_Vault_PublicKeyId: ""
+azure_Vault_PublicKeyVersion: ""
+azure_Vault_PrivateKeyVersion: ""
+azure_endpoint: "https://my-vault.vault.azure.net"
+
+# Hashicorp Vault
+hashicorp_vault: false
+vault_url: "https://localhost:8200"
+tls_KeyStorePath: ""
+tls_TrustStorePath: ""
+app_role_Path: "not-default"
+hashicorp_vaultSecretEngineName: ""
+hashicorp_vaultSecretName: ""
+hashicorp_vaultSecretVersion: ""
+hashicorp_vaultPrivateKeyId: ""
+hashicorp_vaultPublicKeyId: ""
+
+### Features ###
+enable_remoteKeyValidation: false
+enable_privacyEnhancements: false
+enable_multiplePrivateStates:  false
+
+always_send_to: []
+
+### Encryptor EC ###
+# Set encryptor_type to 'EC' to set the options below, other options include 'NACL' and 'CUSTOM'. Default is 'NACL'
+symmetric_cipher: "AES/GCM/NoPadding"
+elliptic_curve: "secp256r1"
+nonce_length: "24"
+shared_key_length: "32"
+
+
+#######################################################
+######################## Misc #########################
+#######################################################
+tessera_state_updates: []
