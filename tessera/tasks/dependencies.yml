@@ -1,0 +1,24 @@
+- name: Add EPEL if RedHat
+  command: amazon-linux-extras install epel -y
+  become: true
+  when: ansible_os_family == 'RedHat' 
+
+- name: Apt update
+  apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+  when: ansible_os_family == 'Debian'
+      
+- name: Install latest Java
+  block:
+    - name: Java for RedHat distros
+      package:
+        name: "java-latest-openjdk.x86_64"
+        state: latest
+      become: yes
+      when: ansible_os_family == 'RedHat'
+    
+    - name: Java for Debian distros
+      package:
+        name: "default-jdk"
+        state: latest
+      become: yes
+      when: ansible_os_family == 'Debian'

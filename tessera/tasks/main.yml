@@ -4,6 +4,9 @@
     msg: You must set "tessera_version" for this role to run
   when: tessera_version is not defined
 
+- name: Install Dependencies
+  include_tasks: "dependencies.yml"
+
 - name: Install Tessera
   include_tasks: "install.yml"
 

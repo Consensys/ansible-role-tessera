@@ -9,11 +9,6 @@
   when: ( ansible_os_family != "Darwin" )
   register: systemd_file
 
-- name: Set updated optionally to trigger a systemd restart at the end
-  set_fact:
-    orion_state_updates: "{{ tessera_state_updates + ['tessera.systemd_file'] }}"
-  when: systemd_file is changed
-
 - name: Reload systemd to reread configs
   systemd:
     daemon_reload: yes
@@ -26,6 +21,5 @@
     state: restarted
     enabled: true
   become: true
-  when: ( tessera_state_updates|length > 0 ) and ( ansible_os_family != "Darwin" )
 
 ...

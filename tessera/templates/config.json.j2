@@ -38,14 +38,13 @@
       "communicationType" : "REST"
     }
   ],
+{% else %}
+{{ server_configs }}
 {% endif %}
-{% if peers is not defined %}
+{% if peers == [] %}
   "peer": [
     {
-      "url": "http://{{ tessera_client_ip }}:9001"
-    },
-    {
-      "url": "http://{{ tessera_client_ip }}:9003"
+      "url": "http://{{ tessera_client_ip }}:9000"
     }
   ],
 {% else %}
@@ -83,9 +82,16 @@
 {% endif %}
     "keyData": [
       {
-{% if public_key_path is defined and private_key_path is defined %}
+{% if public_key_path != "" and private_key_path != "" %}
         "privateKeyPath": "{{ private_key_path }}",
         "publicKeyPath": "{{ public_key_path }}",
+{% endif %}
+{% if public_key != "" and config_details != "" %}
+        "publicKey": "{{ public_key }}",
+        "config": {{ config_details }}
+{% endif %}
+{% if private_key %}
+        ,"privateKey": "{{ private_key }}"
 {% endif %}
 {% if aws_secret_manager %}
         "awsSecretsManagerPublicKeyId": "{{ aws_SecretsManager_PublicKeyId }}",
@@ -104,17 +110,10 @@
         "hashicorpVaultPrivateKeyId": "{{ hashicorp_vaultPrivateKeyId }}",
         "hashicorpVaultPublicKeyId": "{{ hashicorp_vaultPublicKeyId }}"
 {% endif %}
-{% if public_key is defined and config_details is defined %}
-        "publicKey": "{{ public_key }}",
-        "config": "{{ config_details }}"
-{% endif %}
-{% if private_key %}
-        ,"privateKey": "{{ private_key }}"
-{% endif %}
       }
     ]
   },
-  "alwaysSendTo": "{{ always_send_to }}",
+  "alwaysSendTo": {{ always_send_to }},
   "bootstrapNode": "{{ bootstrap_node }}",
 {% if unix_socket_file is defined %}
   "unixSocketFile": "{{ unix_socket_file }}",
@@ -126,9 +125,9 @@
   }
 {% if encryptor_type is defined %}
   ,"encryptor": {
-    "type": "{{ encryptor_type }}",
+    "type": "{{ encryptor_type }}"
 {% if encryptor_type == 'EC' %}
-    "properties":{
+    ,"properties":{
       "symmetricCipher":"{{ symmetric_cipher }}",
       "ellipticCurve": "{{ elliptic_curve }}",
       "nonceLength": "{{ nonce_length }}",

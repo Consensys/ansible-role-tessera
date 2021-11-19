@@ -16,9 +16,5 @@
   become: true
   register: tessera_conf
 
-- name: Set updated optionally to trigger a systemd restart at the end
-  set_fact:
-    tessera_state_updates: "{{ tessera_state_updates + ['tessera.tessera_conf'] }}"
-  when: tessera_conf is changed
 
 ...
