@@ -121,6 +121,28 @@ Ubuntu/Debian:
 
 _Note_: The above `config_details` and `public_key` information is for demonstration purposes only in a dev environment. They should NOT be used in production. Please see [Tessera docs](https://docs.tessera.consensys.net/en/stable/HowTo/Generate-Keys/Generate-Keys/) on how to generate new keys and use Vault services.
 
+_Note_: The above command should only be used for dev environments. Usually you would need to specify your own `peers` and `server_config` to meet your requirements.
+
+Alternative to putting environment variables in command-line:
+
+1. Edit existing `tessera.yml` in the root directory of the project.
+2. Add `vars` to `tessera.yml` like below:
+
+```yaml
+- hosts: localhost
+  connection: local
+  force_handlers: True
+  tasks:
+    - include_role:
+        name: tessera
+  vars:
+    tessera_version: 21.10.0
+    config_details: '["data":{"bytes":"Wl+xSyXVuuqzpvznOS7dOobhcn4C5auxkFRi7yLtgtA="},"type":"unlocked"}]'
+    public_key: BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=
+```
+
+3. Run the result with the following: `ansible-playbook -v tessera.yml -vvv`
+
 ## Licence
 
 Apache
