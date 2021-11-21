@@ -107,7 +107,7 @@ Amazon Linux 2:
 
 1. `sudo amazon-linux-extras install epel -y`
 2. `sudo yum install ansible`
-3. `git clone `
+3. `git clone git@github.com:ConsenSys/ansible-role-tessera.git`
 4. `cd ansible-role-tessera`
 5. `sudo ansible-playbook -e tessera_version=21.10.0 -e config_details='{"data":{"bytes":"Wl+xSyXVuuqzpvznOS7dOobhcn4C5auxkFRi7yLtgtA="},"type":"unlocked"}' -e public_key="BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=" tessera.yml -vvv`
 
@@ -115,7 +115,7 @@ Ubuntu/Debian:
 
 1. `sudo apt update`
 2. `sudo apt install ansible`
-3. `git clone `
+3. `git clone git@github.com:ConsenSys/ansible-role-tessera.git`
 4. `cd ansible-role-tessera`
 5. `sudo ansible-playbook -e tessera_version=21.10.0 -e config_details='{"data":{"bytes":"Wl+xSyXVuuqzpvznOS7dOobhcn4C5auxkFRi7yLtgtA="},"type":"unlocked"}' -e public_key="BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=" tessera.yml -vvv`
 
