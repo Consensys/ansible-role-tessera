@@ -8,6 +8,8 @@ This repo contains an Ansible playbook to deploy [Tessera](https://github.com/Co
 
 - [Prerequisites](#prerequisites)
 - [Role Variables](#role-variables)
+  - [Recommended Required Role Variables](#Recommended-Required-Role-Variables)
+  - [Full List of Role Variables](#Full-List-of-Role-Variables)
 - [Example Usage](#example-usage)
 - [Licence](#licence)
 - [Author Information](#author-information)
