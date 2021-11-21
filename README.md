@@ -141,7 +141,7 @@ _Note_: The above command should only be used for dev environments. Usually you 
     public_key: BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=
 ```
 
-3. Run the result with the following: `ansible-playbook -v tessera.yml -vvv`
+3. Run the result with the following: `sudo ansible-playbook -v tessera.yml -vvv`
 
 ## Licence
 
