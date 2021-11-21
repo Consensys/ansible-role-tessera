@@ -103,15 +103,15 @@ The below table lists the recommended role variables that should be used. Please
 
 ## Example Usage
 
-Amazon Linux 2:
+_Amazon Linux 2_:
 
-1. `sudo amazon-linux-extras install epel -y`
+1. `sudo amazon-linux-extras install epel -y` (omit this if on RedHat but not on Amazon Linux)
 2. `sudo yum install ansible`
 3. `git clone git@github.com:ConsenSys/ansible-role-tessera.git`
 4. `cd ansible-role-tessera`
 5. `sudo ansible-playbook -e tessera_version=21.10.0 -e config_details='{"data":{"bytes":"Wl+xSyXVuuqzpvznOS7dOobhcn4C5auxkFRi7yLtgtA="},"type":"unlocked"}' -e public_key="BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=" tessera.yml -vvv`
 
-Ubuntu/Debian:
+_Ubuntu/Debian_:
 
 1. `sudo apt update`
 2. `sudo apt install ansible`
@@ -123,7 +123,7 @@ _Note_: The above `config_details` and `public_key` information is for demonstra
 
 _Note_: The above command should only be used for dev environments. Usually you would need to specify your own `peers` and `server_config` to meet your requirements.
 
-Alternative to putting environment variables in command-line:
+_Alternative to putting environment variables in command-line_:
 
 1. Edit existing `tessera.yml` in the root directory of the project.
 2. Add `vars` to `tessera.yml` like below:
