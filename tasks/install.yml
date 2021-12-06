@@ -38,7 +38,7 @@
 
 - name: Setup logrotate
   template:
-    src: "tessera/templates/logrotate/tessera"
+    src: "templates/logrotate/tessera"
     dest: "/etc/logrotate.d/tessera"
   become: true
 
@@ -70,7 +70,7 @@
 
 - name: Create logback from template
   template:
-    src: tessera/templates/logback.xml.j2
+    src: templates/logback.xml.j2
     dest: "{{ tessera_config_dir }}/logback.xml"
     owner: "{{ tessera_user }}"
     group: "{{ tessera_group }}"

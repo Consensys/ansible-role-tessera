@@ -1,6 +1,0 @@
-- hosts: localhost
-  connection: local
-  force_handlers: True
-  tasks:
-      - include_role:
-          name: tessera
