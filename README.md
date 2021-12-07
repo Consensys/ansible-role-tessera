@@ -147,7 +147,7 @@ _Note_: The above command should only be used for dev environments. Usually you 
         public_key: BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=
 ```
 
-Run the result with the following: `ansible-playbook -v requirements.yml -vvv`
+3. Run the result with the following: `ansible-playbook -v requirements.yml -vvv`
 
 ## Licence
 
