@@ -119,8 +119,8 @@ The below table lists the recommended role variables that should be used. Please
       vars:
         besu_version: 21.10.2
         tessera_version: 21.10.0
-        config_details: '["data":{"bytes":"Wl+xSyXVuuqzpvznOS7dOobhcn4C5auxkFRi7yLtgtA="},"type":"unlocked"}]'
-        public_key: BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=
+        config_details: '["data":{"bytes":"Wl+...........tA="},"type":"unlocked"}]'
+        public_key: BUL.....3Bo=
 ```
 
 _Note_: The above `config_details` and `public_key` information is for demonstration purposes only in a dev environment. They should NOT be used in production. Please see [Tessera docs](https://docs.tessera.consensys.net/en/stable/HowTo/Generate-Keys/Generate-Keys/) on how to generate new keys and use Vault services.
@@ -143,8 +143,8 @@ _Note_: The above command should only be used for dev environments. Usually you 
       vars:
         besu_version: 21.10.2
         tessera_version: 21.10.0
-        config_details: '["data":{"bytes":"Wl+xSyXVuuqzpvznOS7dOobhcn4C5auxkFRi7yLtgtA="},"type":"unlocked"}]'
-        public_key: BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=
+        config_details: '["data":{"bytes":"Wl+...........tA="},"type":"unlocked"}]'
+        public_key: BUL.....3Bo=
 ```
 
 3. Run the result with the following: `ansible-playbook -v requirements.yml -vvv`
