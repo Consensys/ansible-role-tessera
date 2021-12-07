@@ -107,7 +107,7 @@ The below table lists the recommended role variables that should be used. Please
 
 `ansible-galaxy install consensys.tessera`
 
-**Edit the `requirements.yml` with required variables**
+**Create the `requirements.yml` with required variables**
 
 ```yaml
 - hosts: localhost
@@ -131,7 +131,7 @@ _Note_: The above command should only be used for dev environments. Usually you 
 
 `ansible-galaxy install git+https://github.com/consensys/ansible-role-tessera.git`
 
-**Edit `requirements.yml` for Github installed role**
+**Create `requirements.yml` for Github installed role**
 
 ```yaml
 - hosts: localhost
